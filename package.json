@@ -14,6 +14,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "start:prod": "npm run build && NODE_ENV=production tsx server/index.ts",
     "quality": "npm run typecheck && npm run lint && npm run test && npm run build"
   },
   "dependencies": {

@@ -1,7 +1,10 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { serve } from '@hono/node-server'
+import { serveStatic } from '@hono/node-server/serve-static'
 import { createNodeWebSocket } from '@hono/node-ws'
+import { existsSync } from 'node:fs'
+import { resolve } from 'node:path'
 
 import health from './routes/health.ts'
 import agent from './routes/agent.ts'
@@ -17,6 +20,9 @@ import { getUpcomingEvents } from './services/calendar.ts'
 
 const app = new Hono()
 const { injectWebSocket, upgradeWebSocket } = createNodeWebSocket({ app })
+
+const isProduction = process.env.NODE_ENV === 'production' ||
+  existsSync(resolve(import.meta.dirname, '..', 'dist', 'index.html'))
 
 // Middleware
 app.use('/api/*', cors())
@@ -70,6 +76,17 @@ app.get(
   })
 )
 
+// Serve static frontend in production
+if (isProduction) {
+  // Serve static assets from dist/
+  app.use('/*', serveStatic({ root: './dist' }))
+
+  // SPA fallback: serve index.html for any non-API, non-WS route
+  app.get('*', serveStatic({ root: './dist', path: 'index.html' }))
+
+  console.log('📦 Production mode: serving static frontend from dist/')
+}
+
 // Push updates to all WebSocket clients every 5 seconds
 setInterval(async () => {
   if (wsClients.size === 0) return
@@ -94,8 +111,9 @@ const PORT = 3333
 const server = serve({
   fetch: app.fetch,
   port: PORT,
+  hostname: '0.0.0.0',
 }, (info) => {
-  console.log(`🖖 LCARS Task Dashboard API running on http://localhost:${info.port}`)
+  console.log(`🖖 LCARS Task Dashboard API running on http://0.0.0.0:${info.port}`)
 })
 
 injectWebSocket(server)
