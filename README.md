@@ -1,73 +1,91 @@
-# React + TypeScript + Vite
+# 🖖 LCARS Task Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Real-time task monitoring dashboard with a Star Trek LCARS design system.
 
-Currently, two official plugins are available:
+![LCARS](https://img.shields.io/badge/Design-LCARS-F5A623)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue)
+![Hono](https://img.shields.io/badge/Backend-Hono-orange)
+![React](https://img.shields.io/badge/Frontend-React%2019-61DAFB)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- **Agent Status** — Live heartbeat indicator, current model, session info
+- **Active Tasks** — Running sub-agents with duration and progress
+- **Memory Health** — File count, total size, usage visualization
+- **Calendar** — Upcoming events from memory files
+- **System Resources** — CPU, Memory, Disk usage bars
+- **Quick Actions** — Placeholder buttons for future operations
+- **Real-time Updates** — WebSocket pushes every 5 seconds
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+| Layer | Technology |
+|-------|-----------|
+| Backend | [Hono](https://hono.dev) on Node.js |
+| Frontend | React 19 + TanStack Router + TanStack Query |
+| Styling | Tailwind CSS 4 with LCARS theme |
+| Real-time | WebSocket via @hono/node-ws |
+| Testing | Vitest (unit) + Playwright (E2E) |
+| Build | Vite 7 |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Setup
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+```bash
+# Install dependencies
+npm install
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+# Start dev servers (frontend + backend)
+npm run dev
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Frontend: http://localhost:5173
+# Backend API: http://localhost:3333
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Scripts
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start both frontend and backend |
+| `npm run dev:server` | Backend only (port 3333) |
+| `npm run dev:client` | Frontend only (port 5173) |
+| `npm run build` | Production build |
+| `npm run start` | Start production server |
+| `npm run typecheck` | TypeScript type checking |
+| `npm run lint` | ESLint (zero warnings) |
+| `npm run test` | Vitest unit tests |
+| `npm run test:e2e` | Playwright E2E tests |
+| `npm run quality` | Full quality gate |
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## API Endpoints
+
+All endpoints return JSON:
+
+- `GET /api/health` — System health status
+- `GET /api/agent/status` — Agent heartbeat and model info
+- `GET /api/tasks` — Active sub-agent sessions
+- `GET /api/memory` — Memory directory stats
+- `GET /api/system` — CPU, RAM, disk usage
+- `GET /api/calendar` — Upcoming events
+- `WS /ws` — WebSocket for real-time dashboard updates
+
+## LCARS Design System
+
+| Token | Color |
+|-------|-------|
+| Amber (primary) | `#F5A623` |
+| Orange | `#FF9500` |
+| Dark Panel | `#1A1A2E` |
+| Dark Panel Alt | `#16213E` |
+| Accent Blue | `#0F3460` |
+| Background | `#0a0a1a` |
+
+Design features:
+- Left-side rounded corners (LCARS signature)
+- Monospace font for data readouts
+- Animated heartbeat pulse
+- Subtle scan-line effect
+- High contrast dark theme
+
+## License
+
+MIT

@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+/* LCARS Design System */
+@theme {
+  --color-lcars-amber: #F5A623;
+  --color-lcars-orange: #FF9500;
+  --color-lcars-blue: #0F3460;
+  --color-lcars-dark-1: #1A1A2E;
+  --color-lcars-dark-2: #16213E;
+  --color-lcars-bg: #0a0a1a;
+  --color-lcars-text: #E8E6E3;
+  --color-lcars-muted: #8B8B8B;
+  --color-lcars-success: #00C853;
+  --color-lcars-warning: #FFD600;
+  --color-lcars-danger: #FF1744;
+  --color-lcars-purple: #9C6ADE;
+}
+
+/* Base */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  background: var(--color-lcars-bg);
+  color: var(--color-lcars-text);
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+/* Monospace for data */
+.font-lcars-data {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'SF Mono', 'Consolas', monospace;
+}
+
+/* LCARS Panel — signature left-rounded corners */
+.lcars-panel {
+  background: var(--color-lcars-dark-1);
+  border-radius: 24px 4px 4px 24px;
+  overflow: hidden;
+  border: 1px solid rgba(245, 166, 35, 0.15);
+}
+
+.lcars-panel-bar {
+  height: 6px;
+  border-radius: 3px 0 0 3px;
+}
+
+/* LCARS Button */
+.lcars-button {
+  border-radius: 16px 4px 4px 16px;
+  padding: 8px 20px 8px 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.lcars-button:hover {
+  filter: brightness(1.2);
+  transform: translateY(-1px);
+}
+
+.lcars-button:active {
+  transform: translateY(0);
+}
+
+/* Heartbeat pulse */
+@keyframes heartbeat-pulse {
+  0%, 100% {
+    box-shadow: 0 0 4px var(--color-lcars-success);
+    opacity: 1;
+  }
+  50% {
+    box-shadow: 0 0 16px var(--color-lcars-success), 0 0 32px rgba(0, 200, 83, 0.3);
+    opacity: 0.8;
+  }
+}
+
+.lcars-heartbeat {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-lcars-success);
+  animation: heartbeat-pulse 2s ease-in-out infinite;
+}
+
+.lcars-heartbeat-inactive {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-lcars-danger);
+  opacity: 0.6;
+}
+
+/* Scan line animation */
+@keyframes scanline {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 0.03; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.lcars-scanline::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(transparent, var(--color-lcars-amber), transparent);
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* Progress bar */
+.lcars-progress {
+  height: 8px;
+  border-radius: 4px 0 0 4px;
+  background: var(--color-lcars-dark-2);
+  overflow: hidden;
+}
+
+.lcars-progress-fill {
+  height: 100%;
+  border-radius: 4px 0 0 4px;
+  transition: width 0.5s ease;
+}
+
+/* Fade-in for data updates */
+@keyframes fade-update {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}
+
+.lcars-update {
+  animation: fade-update 0.3s ease;
+}
+
+/* Header bar */
+.lcars-header {
+  background: linear-gradient(90deg, var(--color-lcars-amber), var(--color-lcars-orange));
+  border-radius: 0 0 0 32px;
+}
+
+/* Footer bar */
+.lcars-footer {
+  background: linear-gradient(90deg, var(--color-lcars-blue), var(--color-lcars-dark-2));
+  border-radius: 32px 0 0 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-lcars-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-lcars-amber);
+  border-radius: 2px;
+}
